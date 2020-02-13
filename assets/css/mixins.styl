@@ -1,0 +1,84 @@
+/*--------------------------------------------------------------
+  Mixins
+--------------------------------------------------------------*/
+
+/*--------------------------------------------------------------
+  Fontes
+--------------------------------------------------------------*/
+font-monospace()
+	font-family $font-monospace
+	font-weight normal
+
+font-pre()
+	font-family $font-pre
+	font-weight normal
+
+/*--------------------------------------------------------------
+  Misc
+--------------------------------------------------------------*/
+
+// Input placeholder
+placeholder()
+	&::-webkit-input-placeholder
+		{block}
+	&:-moz-placeholder
+		{block}
+	&::-moz-placeholder
+		{block}
+	&:-ms-input-placeholder
+		{block}
+
+// Selections
+selection()
+	&::selection
+		{block}
+	&::-moz-selection
+		{block}
+
+// mouse-over, focus, active
+hover()
+	&:hover, &:focus, &:active
+		{block}
+
+// focus, active
+focus()
+	&:focus, &:active
+		{block}
+
+// font size rem
+fontsize(value) {
+	// add PX (or original value) as backup
+	font-size: value;
+
+	if (value is inherit) {
+		// do nothing, "inherit" has no unit
+	} else {
+		u = unit(value);
+
+		if (u is not 'rem') {
+			font-size: remify(value)
+		}
+	}
+}
+
+/* PX to REM */
+remify(value) {
+	u = unit(value);
+
+	if (u is 'px') {
+		return unit(value/16, 'rem')
+	} else {
+		if (u is 'em') {
+			return unit(value, 'rem')
+		}
+		return unit(value, u)
+	}
+}
+
+colors(color, child = false) {
+  if (child) {
+    return $colors[color][child]
+  } else {
+    return $colors[color]
+  }
+}
