@@ -45,7 +45,14 @@ class Model extends Connection
 
   public function all()
   {
-    return [];
+    if (!$this->table) {
+      throw new \Exception("Tabela não definida");
+    }
+
+    $stmt = $this->connection->prepare("SELECT * FROM `{$this->table}` ORDER BY `updated_at` DESC");
+    $stmt->execute();
+
+    return $this->processResults($stmt) ?? [];
   }
 
   protected function processResults($statement)

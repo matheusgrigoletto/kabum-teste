@@ -4,19 +4,9 @@ namespace App\Models;
 
 use App\Models\Model;
 
-class ClientAddress extends Model
+class ClientModel extends Model
 {
-  protected $table = 'clients_addresses';
-
-  public function find()
-  {
-    return null;
-  }
-
-  public function all()
-  {
-    return [];
-  }
+  protected $table = 'clients';
 
   public function create()
   {
