@@ -6,15 +6,16 @@ include dirname(__DIR__) . '/partials/navbar.php';
   <div class="row">
     <div class="col-12">
       <div class="d-flex align-items-baseline justify-content-between pb-4">
-        <h2>Cadastrar Cliente</h2>
+        <h2>Editar Cliente</h2>
         <a href="/clientes/index" class="btn btn-light" role="button">Cancelar</a>
       </div>
 
-      <form method="post" id="form-add-client" accept-charset="utf-8" action="/clientes/store">
+      <form method="post" id="form-add-client" accept-charset="utf-8" action="/clientes/update">
+        <input type="hidden" name="id" id="id" value="<?=$cliente->id?>">
         <div class="form-group row">
           <label for="nome" class="col-sm-2 col-form-label">Nome</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control <?=isset($errors['nome']) ? 'is-invalid' : ''?>" id="nome" name="nome" autofocus autocomplete="name" value="<?=$values['nome'] ?? ''?>">
+            <input type="text" class="form-control <?=isset($errors['nome']) ? 'is-invalid' : ''?>" id="nome" name="nome" autofocus autocomplete="name" value="<?=$values['nome'] ?? $cliente->nome?>">
             <div class="invalid-feedback">
               <?=$errors['nome'] ?? ''?>
             </div>
@@ -25,7 +26,7 @@ include dirname(__DIR__) . '/partials/navbar.php';
           <label for="data_nascimento" class="col-sm-2 col-form-label">Data de nascimento</label>
           <div class="col-sm-10">
             <input type="text" class="form-control <?=isset($errors['data_nascimento']) ? 'is-invalid' : ''?>" id="data_nascimento" name="data_nascimento"
-                   data-mask="00/00/0000" data-mask-clearifnotmatch="true" placeholder="dd/mm/aaaa" value="<?=$values['data_nascimento'] ?? ''?>">
+                   data-mask="00/00/0000" data-mask-clearifnotmatch="true" placeholder="dd/mm/aaaa" value="<?=$values['data_nascimento'] ?? $cliente->data_nascimento?>">
             <div class="invalid-feedback">
               <?=$errors['data_nascimento'] ?? ''?>
             </div>
@@ -36,7 +37,7 @@ include dirname(__DIR__) . '/partials/navbar.php';
           <label for="telefone" class="col-sm-2 col-form-label">Telefone</label>
           <div class="col-sm-10">
             <input type="text" class="form-control <?=isset($errors['telefone']) ? 'is-invalid' : ''?>" id="telefone" name="telefone"
-                   autocomplete="tel" data-mask="(00) 000000009" data-mask-clearifnotmatch="true" value="<?=$values['telefone'] ?? ''?>">
+                   autocomplete="tel" data-mask="(00) 000000009" data-mask-clearifnotmatch="true" value="<?=$values['telefone'] ?? $cliente->telefone?>">
             <div class="invalid-feedback">
               <?=$errors['telefone'] ?? ''?>
             </div>
@@ -48,7 +49,7 @@ include dirname(__DIR__) . '/partials/navbar.php';
           <div class="col-sm-10">
             <input type="text" class="form-control <?=isset($errors['cpf']) ? 'is-invalid' : ''?>" id="cpf" name="cpf"
               placeholder="000.000.000-00" data-mask="000.000.000-00" data-mask-clearifnotmatch="true"
-              value="<?=$values['cpf'] ?? ''?>">
+              value="<?=$values['cpf'] ?? $cliente->cpf?>">
             <div class="invalid-feedback">
               <?=$errors['cpf'] ?? ''?>
             </div>
@@ -58,7 +59,7 @@ include dirname(__DIR__) . '/partials/navbar.php';
         <div class="form-group row">
           <label for="rg" class="col-sm-2 col-form-label">RG</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control <?=isset($errors['rg']) ? 'is-invalid' : ''?>" id="rg" name="rg" value="<?=$values['rg'] ?? ''?>">
+            <input type="text" class="form-control <?=isset($errors['rg']) ? 'is-invalid' : ''?>" id="rg" name="rg" value="<?=$values['rg'] ?? $cliente->rg?>">
             <div class="invalid-feedback">
               <?=$errors['rg'] ?? ''?>
             </div>

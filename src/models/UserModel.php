@@ -2,29 +2,27 @@
 
 namespace App\Models;
 
-use App\Models\Model;
-
 class UserModel extends Model
 {
   protected $table = 'users';
 
-  public function all()
-  {
-    return [];
-  }
+  public function checkAuth(string $email = '', string $password = '') {
+    try {
+      $user = $this->find([
+        'email' => $email,
+        'password' => sha1($password),
+      ]);
 
-  public function create()
-  {
-    return null;
-  }
+      $uid = false;
 
-  public function update()
-  {
-    return null;
-  }
+      if($user) {
+        $uid = md5(sha1($user->email . time()));
+      }
 
-  public function delete()
-  {
-    return null;
+      return $uid;
+
+    } catch(\Exception $e) {
+      return false;
+    }
   }
 }

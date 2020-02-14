@@ -11,7 +11,7 @@
 
   <base href="<?= BASE_URL ?>">
 
-  <link rel="stylesheet" href="./build/css/app.css">
+  <link rel="stylesheet" href="./build/css/app.css?_=<?=time()?>">
   <!--[if lt IE 9]><script type="text/javascript" src="./build/js/respond.min.js"></script><![endif]-->
 
 </head>

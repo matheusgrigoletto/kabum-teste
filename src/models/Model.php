@@ -68,9 +68,39 @@ class Model extends Connection
     return $results;
   }
 
-  public function create()
+  public function create(array $data = [])
   {
-    return null;
+    if (!$this->table) {
+      throw new \Exception("Tabela não definida");
+    }
+
+    $vars = [];
+    $query = "INSERT INTO `{$this->table}`(";
+    $temp = [];
+    $columns = [];
+    $data['created_at'] = date('Y-m-d H:i:s');
+    $data['updated_at'] = date('Y-m-d H:i:s');
+    foreach ($data as $key => $value) {
+      $temp[] .= ":{$key}";
+      $vars[":{$key}"] = $value;
+      $columns[] = "`{$key}`";
+    }
+    $query .= implode(', ', $columns) . ") VALUES (";
+    $query .= implode(', ', $temp) . ")";
+
+    $this->connection->beginTransaction();
+    try {
+      $stmt = $this->connection->prepare($query);
+      foreach ($vars as $key => $value) {
+        $stmt->bindValue($key, $value);
+      }
+      $stmt->execute();
+      $this->connection->commit();
+      return true;
+    } catch(\Exception $e) {
+      $this->connection->rollback();
+      return null;
+    }
   }
 
   public function update()
@@ -78,8 +108,18 @@ class Model extends Connection
     return null;
   }
 
-  public function delete()
+  public function delete(int $id)
   {
-    return null;
+    $this->connection->beginTransaction();
+    try {
+      $stmt = $this->connection->prepare("DELETE FROM `{$this->table}` WHERE `{$this->primary_key}` = :id");
+      $stmt->bindValue(':id', $id);
+      $stmt->execute();
+      $this->connection->commit();
+      return true;
+    } catch(\Exception $e) {
+      $this->connection->rollback();
+      return null;
+    }
   }
 }

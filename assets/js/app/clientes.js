@@ -8,7 +8,7 @@
 
   function formClientes() {
     let $enderecoTemplate = $('.endereco-container:last'),
-      enderecoTemplateHtml = $enderecoTemplate.clone(true),
+      enderecoTemplateHtml = $enderecoTemplate.clone(),
       $enderecoWrapper = $('#endereco-wrapper');
 
     $('#btn-add-address').on('click', function (e) {
@@ -20,7 +20,7 @@
 
       setTimeout(() => {
         $enderecoTemplate = $('.endereco-container:last');
-        enderecoTemplateHtml = $enderecoTemplate.clone(true);
+        enderecoTemplateHtml = $enderecoTemplate.clone();
       }, 400);
 
       return false;

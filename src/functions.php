@@ -9,6 +9,25 @@ if (!function_exists('App\Functions\get')) {
   }
 }
 
+if (!function_exists('App\Functions\auth')) {
+  function auth($is_login = false)
+  {
+    if(!isset($_SESSION['uid'])) {
+      $_SESSION['auth-error'] = true;
+
+      if(!$is_login) {
+        header('Location: ' .  BASE_URL . 'login');
+      }
+    } else {
+      unset($_SESSION['auth-error']);
+
+      if($is_login) {
+        header('Location: ' .  BASE_URL . 'clientes');
+      }
+    }
+  }
+}
+
 if (!function_exists('App\Functions\bootstrap')) {
   function bootstrap($controller, $action, $args)
   {
@@ -48,4 +67,23 @@ if (!function_exists('App\Functions\view')) {
       return "Arquivo <code>{$filename}</code> não encontrado.";
     }
   }
+}
+
+function str_to_mysql_date($str) {
+  $str = trim($str);
+  $dt = null;
+
+  if($str != '') {
+    $dt = explode('/', $str);
+    $dt = implode('-', array_reverse($dt));
+  } else {
+    $dt = null;
+  }
+
+  return $dt;
+}
+
+function dd($obj) {
+  var_dump($obj);
+  die;
 }
