@@ -11,7 +11,7 @@
 
 Desenvolver preferencialmente em PHP sem utilização de frameworks, MySQL, FE: livre.  
 
-**Requitos:**
+**Requisitos:**
 - PHP 7.1+
 - Apache com mod_rewrite
 - Composer
