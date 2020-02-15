@@ -3,23 +3,18 @@
 namespace App\Controllers;
 
 use App\Models\UserModel;
-use function App\Functions\auth;
-use function App\Functions\view;
 
 class LoginController
 {
-  public function __construct()
-  {
 
-  }
-
-  public function index()
-  {
+  /**
+   * Página de login
+   * @return bool|string
+   */
+  public function index() {
     auth(true);
 
     try {
-      $authError = $_SESSION['auth-error'] ?? false;
-
       $errors = [];
       $values = [];
 
@@ -34,7 +29,6 @@ class LoginController
       }
 
       return view('login.index', [
-        'authError' => $authError,
         'errors' => $errors,
         'values' => $values,
       ], 'page-login');
@@ -43,12 +37,14 @@ class LoginController
     }
   }
 
-  public function check()
-  {
+  /**
+   * Verificar formulário de login
+   */
+  public function check() {
     $email = strip_tags(trim(filter_input(INPUT_POST, 'email')));
     $password = strip_tags(trim(filter_input(INPUT_POST, 'password')));
     $erros = [];
-    $url = BASE_URL . 'login';
+    $uri = 'login';
 
     // Validar e-mail
     if($email === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -68,7 +64,7 @@ class LoginController
         $erros['email'] = 'E-mail não encontrado';
       } else {
         $_SESSION['uid'] = $uid;
-        $url = BASE_URL . 'clientes';
+        $uri = 'clientes';
       }
     }
 
@@ -76,6 +72,13 @@ class LoginController
     $_SESSION['validation-values'] = [
       'email' => $email,
     ];
-    header('Location: ' . $url);
+
+    redirect($uri);
+  }
+
+  public function out() {
+    session_unset();
+    session_destroy();
+    redirect('login');
   }
 }

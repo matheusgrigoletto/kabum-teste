@@ -3,171 +3,186 @@
 namespace App\Controllers;
 
 use App\Models\ClientModel;
-use function App\Functions\auth;
-use function App\Functions\view;
-use function App\Functions\str_to_mysql_date;
-use function App\Functions\dd;
 
 class ClientesController
 {
-  public function __construct()
-  {
+  public function __construct() {
+    // Verifica autenticação
     auth();
   }
 
-  public function index()
-  {
+  /**
+   * Página inicial de clientes
+   * @return bool|string
+   */
+  public function index() {
     try {
       $clientModel = new ClientModel();
 
+      $salvo = '';
+      if(isset($_SESSION['salvo'])) {
+        $salvo = '<div class="alert alert-success alert-dismissible fade show notification" role="alert">' .
+          'Cliente salvo com sucesso!' .
+          '<button type="button" class="close" data-dismiss="alert" aria-label="fechar">' .
+          '<span aria-hidden="true">&times;</span>' .
+          '</button>' .
+          '</div>';
+
+        unset($_SESSION['salvo']);
+      }
+
+      $excluido = '';
+      if(isset($_SESSION['excluido'])) {
+        $excluido = '<div class="alert alert-success alert-dismissible fade show notification" role="alert">' .
+          'Cliente excluído com sucesso!' .
+          '<button type="button" class="close" data-dismiss="alert" aria-label="fechar">' .
+          '<span aria-hidden="true">&times;</span>' .
+          '</button>' .
+          '</div>';
+
+        unset($_SESSION['excluido']);
+      }
+
       return view('clientes.index', [
         'dataset' => $clientModel->all(),
+        'salvo' => $salvo,
+        'excluido' => $excluido,
       ], 'page-clientes');
     } catch (\Exception $e) {
       return $e->getMessage();
     }
   }
 
-  public function create()
-  {
+  /**
+   * Formulário de cadastro
+   * @return bool|string
+   */
+  public function create() {
     try {
-      $errors = [];
-      $values = [];
-
-      if(isset($_SESSION['validation-errors'])) {
-        $errors = $_SESSION['validation-errors'];
-        unset($_SESSION['validation-errors']);
-      }
-
-      if(isset($_SESSION['validation-values'])) {
-        $values = $_SESSION['validation-values'];
-        unset($_SESSION['validation-values']);
-      }
-
-      return view('clientes.create', [
-        'errors' => $errors,
-        'values' => $values,
-      ], 'page-clientes page-clientes-create');
+      return view('clientes.create', [], 'page-clientes page-clientes-create');
     } catch (\Exception $e) {
       return $e->getMessage();
     }
   }
 
-  public function store()
-  {
+  /**
+   * Salvar novo cliente
+   */
+  public function store() {
+    $response = [
+      'error' => false,
+      'message' => '',
+      'errors' => [],
+      'return_url' => BASE_URL . 'clientes',
+    ];
+
     try {
-      $_SESSION['validation-errors'] = null;
-      $_SESSION['validation-values'] = null;
+      $request = ClientModel::processRequest();
 
-      $campos = [
-        'nome',
-        'data_nascimento',
-        'telefone',
-        'cpf',
-        'rg',
-      ];
-
-      $data = [];
-      $erros = [];
-      $url = BASE_URL . 'clientes';
-
-      foreach($campos as $campo) {
-        $data[$campo] = strip_tags(trim(filter_input(INPUT_POST, $campo)));
-
-        if(empty($data[$campo])) {
-          $erros[$campo] = 'Campo obrigatório';
-        }
-      }
-
-      $endereco_array = [];
-      if(isset($_POST['endereco']) && count($_POST['endereco'])) {
-        foreach($_POST['endereco'] as $index => $endereco) {
-          $endereco_array[] = [
-            'endereco' => strip_tags(trim($_POST['endereco'][$index])),
-            'numero' => strip_tags(trim($_POST['numero'][$index])),
-            'bairro' => strip_tags(trim($_POST['bairro'][$index])),
-            'complemento' => strip_tags(trim($_POST['complemento'][$index])),
-            'cep' => strip_tags(trim($_POST['cep'][$index])),
-            'cidade' => strip_tags(trim($_POST['cidade'][$index])),
-            'estado' => strip_tags(trim($_POST['estado'][$index])),
-          ];
-        }
-      }
-
-      $data['endereco'] = json_encode($endereco_array);
-
-      if(!count($erros)) {
+      if(!count($request->errors)) {
         $clientModel = new ClientModel();
-        $data['data_nascimento'] = str_to_mysql_date($data['data_nascimento']);
-        $clientModel->create($data);
-      } else {
-        $_SESSION['validation-errors'] = $erros;
-        $_SESSION['validation-values'] = $data;
-        $url = BASE_URL . 'clientes/create';
-      }
+        $request->data['data_nascimento'] = str_to_mysql_date($request->data['data_nascimento']);
 
-      header('Location: ' . $url);
+        $clientModel->create($request->data);
+        $_SESSION['salvo'] = true;
+      } else {
+        $response['error'] = true;
+        $response['errors'] = $request->errors;
+      }
     } catch (\Exception $e) {
-      return $e->getMessage();
+      $response['error'] = true;
+      $response['message'] = $e->getMessage();
     }
+
+    json($response);
   }
 
-  public function edit($args = [])
-  {
-    $cliente_id = (int) $args[0];
-    try {
+  /**
+   * Formulário de edição
+   * @param $cliente_id
+   * @return bool|string
+   */
+  public function edit($cliente_id) {
+    $cliente_id = (int) $cliente_id;
 
+    try {
       $clienteModel = new ClientModel();
       $cliente = $clienteModel->find($cliente_id);
 
       if(!$cliente) {
-        header('Location: ' . BASE_URL . 'clientes');
-      }
-
-      $errors = [];
-      $values = [];
-
-      if(isset($_SESSION['validation-errors'])) {
-        $errors = $_SESSION['validation-errors'];
-        unset($_SESSION['validation-errors']);
-      }
-
-      if(isset($_SESSION['validation-values'])) {
-        $values = $_SESSION['validation-values'];
-        unset($_SESSION['validation-values']);
-      }
-
-      $enderecos = [];
-      if($cliente->endereco) {
-        $enderecos = json_decode($cliente->endereco);
+        redirect('clientes');
       }
 
       return view('clientes.edit', [
-        'errors' => $errors,
-        'values' => $values,
         'cliente' => $cliente,
-        'enderecos' => $enderecos,
       ], 'page-clientes page-clientes-edit');
     } catch (\Exception $e) {
       return $e->getMessage();
     }
   }
 
-  public function delete($args = []) {
-    $cliente_id = (int) $args[0];
+  /**
+   * Atualizar dados do cliente
+   * @param $cliente_id
+   */
+  public function update($cliente_id) {
+    $cliente_id = (int) $cliente_id;
+
+    $response = [
+      'error' => false,
+      'message' => '',
+      'errors' => [],
+      'return_url' => BASE_URL . 'clientes',
+    ];
 
     try {
+      $post_client_id = (int) filter_input(INPUT_POST, 'id');
 
+      if($cliente_id === $post_client_id) {
+        $request = ClientModel::processRequest();
+
+        if(!count($request->errors)) {
+          $clientModel = new ClientModel();
+          $request->data['data_nascimento'] = str_to_mysql_date($request->data['data_nascimento']);
+
+          $clientModel->update($request->data, $cliente_id);
+          $_SESSION['salvo'] = true;
+        } else {
+          $response['error'] = true;
+          $response['errors'] = $request->errors;
+        }
+      } else {
+        $response['error'] = true;
+        $response['message'] = 'Cliente inválido';
+      }
+    } catch (\Exception $e) {
+      $response['error'] = true;
+      $response['message'] = $e->getMessage();
+    }
+
+    json($response);
+  }
+
+  /**
+   * Excluir cliente
+   * @param $cliente_id
+   * @return string
+   */
+  public function delete($cliente_id) {
+    $cliente_id = (int) $cliente_id;
+
+    try {
       $clienteModel = new ClientModel();
       $cliente = $clienteModel->find($cliente_id);
 
       if(!$cliente) {
-        header('Location: ' . BASE_URL . 'clientes');
+        redirect('clientes');
       }
 
       $clienteModel->delete($cliente_id);
+      $_SESSION['excluido'] = true;
 
-      header('Location: ' . BASE_URL . 'clientes');
+      redirect('clientes');
     } catch (\Exception $e) {
       return $e->getMessage();
     }

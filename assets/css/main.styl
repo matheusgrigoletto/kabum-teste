@@ -1,2 +1,119 @@
+@-webkit-viewport
+  width: device-width
+@-moz-viewport
+  width: device-width
+@-ms-viewport
+  width: device-width
+@-o-viewport
+  width: device-width
+@viewport
+  width: device-width
+
+@-moz-document url-prefix()
+  fieldset
+    display table-cell
+
++selection()
+  background #000
+  color #FFF
+
+html, body
+  width 100%
+  z-index 1
+  padding 0
+  margin 0
+  position relative
+
+body
+  color #222
+  font-size 16px
+  font-family "Lato", "Helvetica Neue", Helvetica Neue, "HelveticaNeueLTStd", "Helvetica", Arial, sans-serif
+  font-weight initial
+  line-height 1.66
+  -webkit-font-smoothing antialiased
+  -webkit-text-size-adjust 100%
+  -ms-text-size-adjust 100%
+  font-size-adjust auto
+  box-sizing border-box
+  background #fff
+
+*,
+*:before,
+*:after
+  box-sizing inherit
+
+img
+  box-sizing content-box
+
+html, body, main
+  position relative
+  width 100%
+  margin 0
+  padding 0
+
+button, input, optgroup,
+select, textarea, p
+  font-family "Lato", "Helvetica Neue", Helvetica Neue, "HelveticaNeueLTStd", "Helvetica", Arial, sans-serif
+  font-size 18px
+  font-weight 400
+  line-height 1.66
+
+strong
+  font-weight bold
+
+a, a:focus, a:active
+  outline 0 none
+
+h1, h2, h3, h4, h5, h6
+  font-family "Lato", "Helvetica Neue", Helvetica Neue, "HelveticaNeueLTStd", "Helvetica", Arial, sans-serif
+
+.page-404
+  #main
+    position relative
+    width 100%
+    height 100%
+    background-color #fff
+    padding-left 0 !important
+    padding-top 0 !important
+    display flex
+    flex-direction column
+    justify-content center
+    align-items center
+    text-align center
+
+    i
+      color var(--primary)
+      fontsize 5em
+
+    h4
+      margin 1rem auto
+      fontsize 1.2em
+      color var(--secondary)
+
+    ul
+      display block
+
+      li
+        display block
+        margin .5em auto
+
+        a
+          fontsize 1.1em
+
 main
   padding-top 80px
+
+.notification
+  position fixed
+  bottom 1em
+  left 1em
+  z-index 1000
+
+.hidden
+  position absolute
+  top -9999px
+  left -9999px
+  display none
+  visibility hidden
+  z-index -1
+  user-select none

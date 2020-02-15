@@ -1,6 +1,5 @@
 // Requires
 const gulp = require('gulp'),
-	concat = require('gulp-concat'),
 	gutil = require('gulp-util'),
 	sourcemaps = require('gulp-sourcemaps'),
 	source = require('vinyl-source-stream'),
@@ -15,9 +14,7 @@ const gulp = require('gulp'),
 	jeet = require('jeet'),
 	rupture = require('rupture'),
 	axis = require('axis'),
-	nib = require('nib'),
-	imagemin = require('gulp-imagemin'),
-	newer = require('gulp-newer');
+	nib = require('nib');
 
 // =====================================================================================================================
 // Pastas de build e sources
@@ -34,7 +31,6 @@ const build = './public/build/',
 			singles: ['./assets/css/single/*.styl'],
 			all: ['./assets/css/**/*.styl'],
 		},
-		images: ['./assets/images/**/*.*'],
 	};
 // =====================================================================================================================
 // Ambiente de desenvolvimento
@@ -133,24 +129,12 @@ function _css(files, singles, output) {
 		.pipe(gulp.dest(output + 'css').on('error', onError));
 }
 
-// Imagens
-function _images(input, output) {
-	return gulp.src(input)
-		.pipe(newer(output + 'images'))
-		.pipe(imagemin().on('error', onError))
-		.pipe(gulp.dest(output + 'images/'));
-}
-
 function _watch() {
 	gulp.watch(sources.js.all, ['js']).on('change', event => {
 		gutil.log(`[${event.path}] ${event.type.toUpperCase()}`);
 	});
 
 	gulp.watch(sources.css.all, ['css']).on('change', event => {
-		gutil.log(`[${event.path}] ${event.type.toUpperCase()}`);
-	});
-
-	gulp.watch(sources.images, ['images']).on('change', event => {
 		gutil.log(`[${event.path}] ${event.type.toUpperCase()}`);
 	});
 }
@@ -165,14 +149,9 @@ gulp.task('css', () => {
 	_css(sources.css.files, sources.css.singles, build);
 });
 
-// Images
-gulp.task('images', () => {
-	_images(sources.images, build);
-});
-
 // Watch
 gulp.task('watch', () => {
 	_watch();
 });
 
-gulp.task('default', ['js', 'css', 'images'], () => _watch());
+gulp.task('default', ['js', 'css'], () => _watch());

@@ -10,13 +10,13 @@
   },
   "author": {
     "name": "Matheus B. Grigoletto",
-    "email": "matheus@nova.pro.br"
+    "email": "matheus.grigoletto@gmail.com"
   },
   "license": "ISC",
   "scripts": {
     "start": "gulp",
     "dev": "gulp --prod",
-    "build": "gulp css --prod && gulp js --prod && gulp images"
+    "build": "gulp css --prod && gulp js --prod"
   },
   "devDependencies": {
     "axis": "^1.0.0",
@@ -30,8 +30,6 @@
     "gulp-concat": "^2.6.1",
     "gulp-cssnano": "^2.1.3",
     "gulp-if": "^2.0.2",
-    "gulp-imagemin": "^4.1.0",
-    "gulp-newer": "^1.4.0",
     "gulp-sourcemaps": "^2.6.4",
     "gulp-stylus": "^2.7.0",
     "gulp-uglify": "^3.0.0",

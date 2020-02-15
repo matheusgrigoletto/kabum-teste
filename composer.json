@@ -1,29 +1,22 @@
 {
-    "name": "matheusgrigoletto/kabum-teste-tecnico",
-    "description": "Teste técnico para vaga de Desenvolvedor FullStack na Kabum",
-    "type": "project",
-    "require": {
-        "nesbot/carbon": "^2.0@dev"
-    },
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Matheus B. Grigoletto",
-            "email": "matheus.grigoletto@gmail.com"
-        }
-    ],
-    "minimum-stability": "dev",
-    "autoload": {
-        "psr-4": {
-            "App\\": "src/"
-        },
-        "files": [
-            "src/functions.php",
-            "src/env.php"
-        ]
-    },
-    "scripts": {
-        "cli": "php public/index.php",
-        "http": "php -S localhost:8000 -t public/"
+  "name": "matheusgrigoletto/kabum-teste-tecnico",
+  "description": "Teste técnico para vaga de Desenvolvedor FullStack na Kabum",
+  "type": "project",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Matheus B. Grigoletto",
+      "email": "matheus.grigoletto@gmail.com"
     }
+  ],
+  "minimum-stability": "dev",
+  "autoload": {
+    "psr-4": {
+      "App\\": "src/"
+    },
+    "files": [
+      "src/functions.php",
+      "src/env.php"
+    ]
+  }
 }

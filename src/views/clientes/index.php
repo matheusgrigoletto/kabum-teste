@@ -2,6 +2,9 @@
 include dirname(__DIR__) . '/partials/navbar.php';
 ?>
 
+<?= $salvo ?>
+<?= $excluido ?>
+
 <div class="container">
   <div class="row">
     <div class="col-12">
@@ -31,7 +34,7 @@ include dirname(__DIR__) . '/partials/navbar.php';
                   <td><?= $row->telefone ?></td>
                   <td class="text-right">
                     <a href="/clientes/edit/<?= $row->id ?>" class="btn btn-sm btn-info" role="button">Editar</a>
-                    <a href="/clientes/delete/<?= $row->id ?>" class="btn btn-sm btn-danger" role="button">Excluir</a>
+                    <a href="/clientes/delete/<?= $row->id ?>" class="btn btn-sm btn-danger btn-delete" role="button">Excluir</a>
                   </td>
                 </tr>
               <?php endforeach; ?>

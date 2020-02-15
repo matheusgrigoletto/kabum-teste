@@ -4,15 +4,10 @@ session_start();
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 
-use function App\Functions\get;
-use function App\Functions\auth;
-use function App\Functions\bootstrap as app;
-
-$route = explode('/', get('route'));
+$route = explode('/', filter_input(INPUT_GET, 'route') ?? null);
 
 $controller = $route[0] ? $route[0] : 'clientes';
 $action = $route[1] ?? 'index';
-$args = array_slice($route, 2) ?? [];
+$args = array_slice($route, 2)[0] ?? [];
 
-//auth();
-app($controller, $action, $args);
+bootstrap($controller, $action, $args);

@@ -14,14 +14,15 @@ for (let method in Helpers) {
 ((window, document, $) => {
   // Inicialização
   $(() => {
+    logout();
   });
 
   // Logout
   function logout() {
-    $('.btn-out').on('click', function (e) {
+    $('#btn-logout').on('click', function (e) {
       e.preventDefault();
-      window.el('form-logout').submit();
-      return !1;
+      document.getElementById('form-logout').submit();
+      return false;
     });
   }
 })(window, document, window.jQuery);

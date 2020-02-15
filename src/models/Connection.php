@@ -10,8 +10,7 @@ class Connection
   protected $database = null;
   protected $connection = null;
 
-  public function __construct()
-  {
+  public function __construct() {
     $this->host = DB_HOST;
     $this->user = DB_USER;
     $this->pass = DB_PASS;

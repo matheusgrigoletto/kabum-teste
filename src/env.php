@@ -1,16 +1,7 @@
 <?php
-$config = [
-  'environment' => 'dev',
-  'base_url' => 'http://kabum.teste/',
-  'db' => [
-    'host' => 'localhost',
-    'user' => 'root',
-    'pass' => 'root',
-    'database' => 'kabum',
-  ],
-];
+$env = envToArray(dirname(__DIR__) . '/.env');
 
-foreach ($config as $key => $value) {
+foreach ($env as $key => $value) {
   if (!is_array($value)) {
     define(mb_strtoupper($key), $value);
   } else {

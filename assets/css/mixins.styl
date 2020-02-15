@@ -1,22 +1,3 @@
-/*--------------------------------------------------------------
-  Mixins
---------------------------------------------------------------*/
-
-/*--------------------------------------------------------------
-  Fontes
---------------------------------------------------------------*/
-font-monospace()
-	font-family $font-monospace
-	font-weight normal
-
-font-pre()
-	font-family $font-pre
-	font-weight normal
-
-/*--------------------------------------------------------------
-  Misc
---------------------------------------------------------------*/
-
 // Input placeholder
 placeholder()
 	&::-webkit-input-placeholder
@@ -73,12 +54,4 @@ remify(value) {
 		}
 		return unit(value, u)
 	}
-}
-
-colors(color, child = false) {
-  if (child) {
-    return $colors[color][child]
-  } else {
-    return $colors[color]
-  }
 }

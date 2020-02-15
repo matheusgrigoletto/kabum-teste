@@ -10,8 +10,7 @@ class Model extends Connection
 
   protected $primary_key = 'id';
 
-  public function find($find)
-  {
+  public function find($find) {
     if (!is_int($find) && !is_array($find)) {
       throw new \Exception("Parâmetro inválido");
     }
@@ -43,8 +42,7 @@ class Model extends Connection
     return $this->processResults($stmt)[0] ?? null;
   }
 
-  public function all()
-  {
+  public function all() {
     if (!$this->table) {
       throw new \Exception("Tabela não definida");
     }
@@ -55,8 +53,7 @@ class Model extends Connection
     return $this->processResults($stmt) ?? [];
   }
 
-  protected function processResults($statement)
-  {
+  protected function processResults($statement) {
     $results = [];
 
     if ($statement) {
@@ -68,8 +65,7 @@ class Model extends Connection
     return $results;
   }
 
-  public function create(array $data = [])
-  {
+  public function create(array $data = []) {
     if (!$this->table) {
       throw new \Exception("Tabela não definida");
     }
@@ -103,13 +99,42 @@ class Model extends Connection
     }
   }
 
-  public function update()
-  {
-    return null;
+  public function update(array $data, int $id) {
+    if (!$this->table) {
+      throw new \Exception("Tabela não definida");
+    }
+
+    $vars = [];
+    $temp = [];
+
+    $data['updated_at'] = date('Y-m-d H:i:s');
+
+    $query = "UPDATE `{$this->table}` SET ";
+    foreach ($data as $key => $value) {
+      $temp[] .= "`{$key}` = :{$key}";
+      $vars[":{$key}"] = $value;
+    }
+    $query .= implode(', ', $temp) . " WHERE `{$this->primary_key}` = :id";
+
+    $this->connection->beginTransaction();
+    try {
+      $stmt = $this->connection->prepare($query);
+      foreach ($vars as $key => $value) {
+        $stmt->bindValue($key, $value);
+      }
+      $stmt->bindValue(':id', $id);
+      $stmt->execute();
+
+      $this->connection->commit();
+
+      return true;
+    } catch(\Exception $e) {
+      $this->connection->rollback();
+      return null;
+    }
   }
 
-  public function delete(int $id)
-  {
+  public function delete(int $id) {
     $this->connection->beginTransaction();
     try {
       $stmt = $this->connection->prepare("DELETE FROM `{$this->table}` WHERE `{$this->primary_key}` = :id");
