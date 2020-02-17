@@ -26,3 +26,7 @@ Desenvolver preferencialmente em PHP sem utilização de frameworks, MySQL, FE: 
 Login:
 - E-mail: admin@kabum.com.br
 - Senha: admin!kabum
+
+URL live:
+
+- http://kabum-teste.nova.pro.br
