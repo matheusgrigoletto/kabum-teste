@@ -6,10 +6,6 @@ require('./vendor/jquery.mask');
 
 // Helpers
 require('./helpers/browser.helpers');
-const Helpers = require('./helpers/helpers');
-for (let method in Helpers) {
-  window[method] = Helpers[method];
-}
 
 ((window, document, $) => {
   // Inicialização

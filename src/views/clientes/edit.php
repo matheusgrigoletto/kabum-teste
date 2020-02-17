@@ -61,7 +61,7 @@ include dirname(__DIR__) . '/partials/navbar.php';
               <div class="form-group row">
                 <div class="d-flex justify-content-between col">
                   <h5>Endereço #<span><?=($index+1)?></span></h5>
-                  <button class="btn btn-sm btn-warning hidden" type="button">remover endereço</button>
+                  <button class="btn btn-sm btn-warning <?=($index===0) ? 'hidden' : '' ?>" type="button">remover endereço</button>
                 </div>
               </div>
 

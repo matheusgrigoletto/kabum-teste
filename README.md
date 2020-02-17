@@ -17,11 +17,11 @@ Desenvolver preferencialmente em PHP sem utilização de frameworks, MySQL, FE: 
 - Composer
 
 **Configurações iniciais**
-- Copiar o arquivo ```.env.example``` para ```.env```
-- Definir banco de dados no arquivo ```.env```
 - DOCUMENT_ROOT deve ser a pasta ```/public```
 - Fazer a instalação do banco de dados, o dump está em ```database/db.sql```
-- Executar o comando ```composer install```
+- Copiar o arquivo ```.env.example``` para ```.env```
+- Definir banco de dados no arquivo ```.env```
+- Executar o comando ```composer install -o```
 
 Login:
 - E-mail: admin@kabum.com.br
@@ -29,4 +29,4 @@ Login:
 
 URL live:
 
-- http://kabum-teste.nova.pro.br
+- http://kabum-teste.nova.pro.br/

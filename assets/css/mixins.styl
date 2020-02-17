@@ -28,11 +28,10 @@ focus()
 
 // font size rem
 fontsize(value) {
-	// add PX (or original value) as backup
 	font-size: value;
 
 	if (value is inherit) {
-		// do nothing, "inherit" has no unit
+		// não faz nada
 	} else {
 		u = unit(value);
 
@@ -42,7 +41,7 @@ fontsize(value) {
 	}
 }
 
-/* PX to REM */
+/* PX para REM */
 remify(value) {
 	u = unit(value);
 

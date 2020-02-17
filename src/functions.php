@@ -35,7 +35,7 @@ function bootstrap($controller, $action, $args) {
   }
 
   if ($__notFound) {
-    echo 'Página não enocntrada.';
+    echo 'Página não encontrada.';
   }
 }
 
